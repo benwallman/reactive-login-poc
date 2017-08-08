@@ -7,6 +7,7 @@
     "start": "node server/server.js",
     "build": "npm install && webpack",
     "dev": "node server/server.js & webpack -d --watch",
+    "webpack": "webpack -d --watch",
     "docker:shell": "docker run -it -p 9090:9090 -v $(pwd):/var/app/ -w /var/app node:8 sh"
   },
   "repository": {

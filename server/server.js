@@ -8,9 +8,9 @@ const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.use(express.static('dist'));
-
 app.post('/login', (req, res)=>{
+  console.log("here");
+  console.log(req.body);
   setTimeout(function(){
     if(!req.body || !req.body.username || !req.body.password) res.sendStatus(400);
     else if(req.body.username !== "ben") res.sendStatus(404);
@@ -18,6 +18,8 @@ app.post('/login', (req, res)=>{
     else res.sendStatus(200);
   }, 2000);
 });
+
+app.use(express.static('dist'));
 
 app.use('/*', express.static(path.resolve('dist/index.html')));
 
