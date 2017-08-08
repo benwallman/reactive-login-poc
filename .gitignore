@@ -1,0 +1,17 @@
+# dependencies
+/node_modules
+/pattern-library/node_modules
+/output
+
+# testing
+/coverage
+
+# production
+/dist
+
+# logging
+/logs
+*.log
+
+# other
+.idea

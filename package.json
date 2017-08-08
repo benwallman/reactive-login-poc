@@ -1,0 +1,39 @@
+{
+  "name": "react-starter-kit",
+  "version": "1.0.0",
+  "description": "An opinionated react starter kit. Let's all do it my way",
+  "main": "index.js",
+  "scripts": {
+    "start": "node server/server.js",
+    "build": "npm install && webpack",
+    "dev": "node server/server.js & webpack -d --watch",
+    "docker:shell": "docker run -it -p 9090:9090 -v $(pwd):/var/app/ -w /var/app node:8 sh"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/benwallman/react-starter-kit.git"
+  },
+  "author": "Ben Wallman",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/benwallman/react-starter-kit/issues"
+  },
+  "homepage": "https://github.com/benwallman/react-starter-kit#readme",
+  "dependencies": {
+    "express": "^4.15.3",
+    "path": "^0.12.7"
+  },
+  "devDependencies": {
+    "babel-core": "^6.25.0",
+    "babel-loader": "^7.1.1",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-react": "^6.24.1",
+    "html-webpack-plugin": "^2.29.0",
+    "react": "^15.6.1",
+    "react-dom": "^15.6.1",
+    "react-router-redux": "^4.0.8",
+    "rxjs": "^5.4.2",
+    "webpack": "^3.3.0",
+    "webpack-dev-server": "^2.6.1"
+  }
+}
