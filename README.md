@@ -2,6 +2,8 @@
 
 A lightweight Proof of Concept to demonstrate how forms don't need buttons. Obviously rate limiting and security measures should be factored in to this, but I'm lazy.
 
+As it's built in docker, all you need is docker. No node, no java, no nothing (except docker)..
+
 ## To run
 
 ```
