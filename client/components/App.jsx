@@ -7,47 +7,38 @@ let defaultOpts = {
   "data": null
 }
 
-let httpRequest = function(options) {
+
+let httpRequest = (options) => Rx.Observable.create(observer => {
   options = Object.assign({}, defaultOpts, options)
 
-  return Rx.Observable.create((observer) => {
-    let xhr = new XMLHttpRequest()
+  let xhr = new XMLHttpRequest()
 
-    observer.next(xhr.readyState)
+  observer.next(xhr.readyState)
 
-    xhr.open(options.method, options.url, true)
-    xhr.setRequestHeader("Content-Type", "application/json")
-    xhr.send(JSON.stringify(options.data))
+  xhr.open(options.method, options.url, true)
+  xhr.setRequestHeader("Content-Type", "application/json")
+  xhr.send(JSON.stringify(options.data))
 
-    observer.next(xhr.readyState)
+  observer.next(xhr.readyState)
 
-    xhr.onreadystatechange = () => {
-      var DONE = 4 // readyState 4 means the request is done.
-      var OK = 200 // status 200 is a successful return.
-      if (xhr.readyState === DONE) {
-        if (xhr.status === OK) {
-          // console.log(xhr.responseText) // 'This is the returned text.'
-          observer.complete()
-        }
-        else {
-          observer.error(xhr.status)
-        }
-      } else {
-        observer.next(xhr.readyState)
-      }
+  xhr.onreadystatechange = () => {
+    if (xhr.readyState === 4) {
+      (xhr.status === 200) ? observer.complete() : observer.error(xhr.status)
+    } else {
+      observer.next(xhr.readyState)
     }
-  }).subscribe({
-    next: x => console.log('got value ' + x),
-    error: err => console.error('Something wrong occurred: ' + err),
-    complete: () => console.log('Successful response')
-  })
+  }
 
+  return () => {
+    xhr.abort()
+  }
 }
+)
 
 export default class App extends React.Component {
   constructor(props) {
     super(props)
-    this.httpRequest = httpRequest.bind(this)
+
     this.handleInputChange = this.handleInputChange.bind(this)
     this.observables = []
     this.autoSend = this.autoSend.bind(this)
@@ -62,20 +53,29 @@ export default class App extends React.Component {
     this.setState({
       [e.target.name]: e.target.value
     })
-    setTimeout(() => {
-      this.autoSend()
-    })
+    setTimeout(() => this.autoSend())
   }
 
   autoSend() {
-    console.log(this.state.username + "   " + this.state.password)
     if (this.state.username && this.state.password) {
-      this.observables.push(this.httpRequest({ "data": { "username": this.state.username, "password": this.state.password } }))
+      let options = { "data": { "username": this.state.username, "password": this.state.password } }
+      this.observables.push(httpRequest(options).subscribe({
+        // next: x => console.log('got value ' + x),
+        error: (err) => {
+          if (err === 0) {
+            console.log("Request cancelled")
+          } else {
+            console.log("Request failed")
+          }
+        },
+        complete: () => alert('Successful response')
+      }))
+
       if (this.observables.length) {
-        let arrLength = this.observables.length - 1
-        console.log(this.observables[arrLength])
-        this.observables[arrLength].unsubscribe()
-        console.log(this.observables[arrLength])
+        let arrLength = this.observables.length - 2
+        if (this.observables[arrLength]) {
+          this.observables[arrLength].unsubscribe()
+        }
       }
     }
   }
@@ -83,17 +83,10 @@ export default class App extends React.Component {
   render() {
     return (
       <div style={{ textAlign: 'center' }}>
-        <h1 onClick={() => {
-          this.observables.push(this.httpRequest({ "data": { "username": "ben", "password": "password" } }))
-          setTimeout(() => {
-            let arrLength = this.observables.length - 1
-            console.log(this.observables[arrLength])
-            this.observables[arrLength].unsubscribe()
-            console.log(this.observables[arrLength])
-          }, 1000)
-        }}>Hello world</h1>
+        <h1>No button login P.o.C</h1>
         <span>username: <input type="text" name="username" value={this.state.username} onChange={this.handleInputChange}></input></span>
         <span>password: <input type="text" name="password" value={this.state.password} onChange={this.handleInputChange}></input></span>
+        <br/><br/><span>Hint, the username is 'ben' and the password is 'password'</span>
       </div>)
   }
 }

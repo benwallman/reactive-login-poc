@@ -6,17 +6,19 @@ const PORT = process.env.PORT || 9090;
 const app = express();
 
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({
+  extended: true
+}));
 
-app.post('/login', (req, res)=>{
+app.post('/login', (req, res) => {
   console.log("here");
   console.log(req.body);
-  setTimeout(function(){
-    if(!req.body || !req.body.username || !req.body.password) res.sendStatus(400);
-    else if(req.body.username !== "ben") res.sendStatus(404);
-    else if(req.body.password !== "password") res.sendStatus(401);
+  setTimeout(() => {
+    if (!req.body || !req.body.username || !req.body.password) res.sendStatus(400);
+    else if (req.body.username !== "ben") res.sendStatus(404);
+    else if (req.body.password !== "password") res.sendStatus(401);
     else res.sendStatus(200);
-  }, 2000);
+  }, 300);
 });
 
 app.use(express.static('dist'));
