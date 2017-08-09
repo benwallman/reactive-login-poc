@@ -1,15 +1,16 @@
-# react-starter-kit
-An opinionated react starter kit. Let's all do it my way
+# reactive-login-poc
 
+A lightweight Proof of Concept to demonstrate how forms don't need buttons. Obviously rate limiting and security measures should be factored in to this, but I'm lazy.
 
-# TODO
- - Install & use react router, SPA's are the future
- - Install & use something for state. Redux & flux maybe?
- - Install & use rx.js. You ain't no amateur
- - Generate config at runtime, serve it with node server and retrieve w/ http method using rx
- - Invade Cuba
- - Implement styling, presumably SCSS. Use it properly
- - Create unit tests, allow them to be ran with npm commands
- - Create integration tests, allow them to be ran with npm commands
- - Create acceptance tests, headless chrome & firefox, maybe bound w/ docker-compose
- - Tidy up documentation, justify design choices
+## To run
+
+```
+docker run -p 9090:9090 benwallman/reactive-login-poc
+```
+
+## To build / developer
+```
+npm run docker:shell
+npm install
+npm run dev
+```
