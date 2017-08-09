@@ -7,7 +7,7 @@ let defaultOpts = {
   "data": null
 }
 
-let httpRequest = (options) => {
+let httpRequest = function(options) {
   options = Object.assign({}, defaultOpts, options)
 
   return Rx.Observable.create((observer) => {
@@ -48,21 +48,52 @@ export default class App extends React.Component {
   constructor(props) {
     super(props)
     this.httpRequest = httpRequest.bind(this)
-    // this.observables = [];
+    this.handleInputChange = this.handleInputChange.bind(this)
+    this.observables = []
+    this.autoSend = this.autoSend.bind(this)
+
+    this.state = {
+      username: "",
+      password: ""
+    }
   }
 
+  handleInputChange(e) {
+    this.setState({
+      [e.target.name]: e.target.value
+    })
+    setTimeout(() => {
+      this.autoSend()
+    })
+  }
+
+  autoSend() {
+    console.log(this.state.username + "   " + this.state.password)
+    if (this.state.username && this.state.password) {
+      this.observables.push(this.httpRequest({ "data": { "username": this.state.username, "password": this.state.password } }))
+      if (this.observables.length) {
+        let arrLength = this.observables.length - 1
+        console.log(this.observables[arrLength])
+        this.observables[arrLength].unsubscribe()
+        console.log(this.observables[arrLength])
+      }
+    }
+  }
 
   render() {
     return (
       <div style={{ textAlign: 'center' }}>
         <h1 onClick={() => {
-          this.ongoingRequest = this.httpRequest({ "data": { "username": "ben", "password": "password" } })
-          setTimeout(()=>{
-            console.log(this.ongoingRequest)
-            this.ongoingRequest.unsubscribe()
-            console.log(this.ongoingRequest)
+          this.observables.push(this.httpRequest({ "data": { "username": "ben", "password": "password" } }))
+          setTimeout(() => {
+            let arrLength = this.observables.length - 1
+            console.log(this.observables[arrLength])
+            this.observables[arrLength].unsubscribe()
+            console.log(this.observables[arrLength])
           }, 1000)
         }}>Hello world</h1>
+        <span>username: <input type="text" name="username" value={this.state.username} onChange={this.handleInputChange}></input></span>
+        <span>password: <input type="text" name="password" value={this.state.password} onChange={this.handleInputChange}></input></span>
       </div>)
   }
 }
