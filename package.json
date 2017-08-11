@@ -1,7 +1,7 @@
 {
-  "name": "react-starter-kit",
+  "name": "reactive-login-poc",
   "version": "1.0.0",
-  "description": "An opinionated react starter kit. Let's all do it my way",
+  "description": "A react login P.o.C",
   "main": "index.js",
   "scripts": {
     "start": "node server/server.js",
@@ -12,14 +12,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/benwallman/react-starter-kit.git"
+    "url": "git+https://github.com/benwallman/reactive-login-poc.git"
   },
   "author": "Ben Wallman",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/benwallman/react-starter-kit/issues"
+    "url": "https://github.com/benwallman/reactive-login-poc/issues"
   },
-  "homepage": "https://github.com/benwallman/react-starter-kit#readme",
+  "homepage": "https://github.com/benwallman/reactive-login-poc#readme",
   "dependencies": {
     "express": "^4.15.3",
     "path": "^0.12.7"
